@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import RegisterView, ProfileView, FollowUnfollowView, SearchUserView  # ← SearchUserView যোগ করো
+from .views import RegisterView, ProfileView, FollowUnfollowView, SearchUserView, LogoutView
 
 urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name='profile'),
     path('follow/<int:pk>/', FollowUnfollowView.as_view(), name='follow'),
     path('search/', SearchUserView.as_view(), name='search-user'),
+    path('logout/', LogoutView.as_view(), name='logout'),
 ]

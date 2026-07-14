@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 from .serializers import RegisterSerializer, UserProfileSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -50,3 +51,16 @@ class SearchUserView(generics.ListAPIView):
     def get_queryset(self):
         query = self.request.query_params.get('q', '')
         return User.objects.filter(username__icontains=query)            
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get('refresh')
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response({'message': 'Logout successful'})
+        except Exception:
+            return Response({'error': 'Invalid token'}, status=400)
